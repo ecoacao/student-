@@ -213,7 +213,8 @@
       const handleLogin = (userData) => {
         const { email, password } = userData;
         if (email === 'user@gmail.com' && password === '123') {
-          setUser({ nome: 'João Silva', email });
+          // Redireciona para a página inicial após login
+          window.location.href = 'inicial.html';
         } else {
           alert('Credenciais inválidas');
         }
@@ -252,5 +253,6 @@
   </div>
 </body>
 </html>
+
 
 
