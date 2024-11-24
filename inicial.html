@@ -120,6 +120,23 @@
       color: #777;
     }
 
+    /* Navbar */
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar a {
+      color: #333;
+      font-size: 16px;
+      padding: 15px 20px;
+    }
+
+    .navbar a:hover {
+      background-color: #f66f3c;
+      color: white;
+    }
+
     /* Responsividade */
     @media (max-width: 768px) {
       .stats .stat-card {
@@ -133,18 +150,35 @@
       }
     }
 
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
-      margin-top: 40px;
-      font-size: 14px;
-      color: #777;
-    }
   </style>
 </head>
 <body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Bantux</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/carregar">Carregar Conta</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/historico">Histórico</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">Sair</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
   <!-- Container principal -->
   <div class="container">
@@ -189,14 +223,11 @@
       </div>
     </div>
 
-    <!-- Rodapé -->
-    <div class="footer">
-      <p>&copy; 2024 Bantux. Todos os direitos reservados.</p>
-    </div>
-
   </div>
 
-  <!-- JS do Bootstrap -->
+  <!-- JS do Bootstrap e React Router -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+
