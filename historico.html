@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico de Transações - Bantux</title>
+
+  <!-- Link para o Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS embutido -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9; /* Fundo simples e claro */
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #f66f3c;
+    }
+
+    .navbar-brand {
+      color: white !important;
+    }
+
+    .navbar-nav .nav-link {
+      color: white !important;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #ff7b34 !important;
+    }
+
+    .container {
+      margin-top: 100px; /* Aumento da margem superior */
+      padding: 20px;
+      max-width: 900px;
+    }
+
+    .card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .card-body {
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+    }
+
+    .btn-custom {
+      background-color: #f66f3c;
+      color: white;
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .btn-custom:hover {
+      background-color: #ff7b34;
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .form-control {
+      font-size: 16px;
+    }
+
+    .input-group-text {
+      background-color: #f66f3c;
+      border: none;
+      color: #fff;
+    }
+
+    .history-item {
+      background-color: #f0f0f0;
+      border: none;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+
+    .history-item:hover {
+      background-color: #f66f3c;
+      color: white;
+    }
+
+    .history-filter {
+      margin-bottom: 20px;
+    }
+
+    .filter-select {
+      font-size: 16px;
+    }
+
+    /* Responsividade para dispositivos móveis */
+    @media (max-width: 576px) {
+      .navbar-brand, .navbar-nav .nav-link {
+        font-size: 14px;
+      }
+
+      .container {
+        margin-top: 80px;
+      }
+
+      .card-body {
+        padding: 20px; /* Menos padding em dispositivos móveis */
+      }
+
+      .form-control {
+        font-size: 14px;
+      }
+
+      .btn-custom {
+        font-size: 16px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Bantux</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Carregar Conta</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Histórico</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sair</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Página Histórico -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-center mb-4">Histórico de Transações</h2>
+
+        <!-- Filtro para transações -->
+        <div class="history-filter">
+          <label for="filtro-tipo" class="form-label">Filtrar por tipo</label>
+          <select class="form-select filter-select" id="filtro-tipo">
+            <option value="todos">Todos</option>
+            <option value="carregamento">Carregamento</option>
+            <option value="transferencia">Transferência</option>
+            <option value="gasto">Gasto</option>
+          </select>
+        </div>
+
+        <!-- Lista de Histórico -->
+        <div id="historico-lista">
+          <!-- Transações serão carregadas aqui -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Simulação de dados de transações
+    const transacoes = [
+      { id: 1, tipo: 'carregamento', valor: 1000, data: '24/11/2024' },
+      { id: 2, tipo: 'transferencia', valor: 500, data: '23/11/2024' },
+      { id: 3, tipo: 'gasto', valor: 150, data: '22/11/2024' },
+      { id: 4, tipo: 'carregamento', valor: 2000, data: '21/11/2024' },
+      { id: 5, tipo: 'transferencia', valor: 800, data: '20/11/2024' },
+    ];
+
+    const historicoLista = document.getElementById('historico-lista');
+    const filtroTipo = document.getElementById('filtro-tipo');
+
+    // Função para renderizar as transações no histórico
+    function renderizarHistorico(filtro = 'todos') {
+      historicoLista.innerHTML = ''; // Limpa a lista atual
+
+      const transacoesFiltradas = transacoes.filter(transacao => {
+        if (filtro === 'todos') return true;
+        return transacao.tipo === filtro;
+      });
+
+      // Renderiza cada transação
+      transacoesFiltradas.forEach(transacao => {
+        const div = document.createElement('div');
+        div.classList.add('history-item');
+        div.innerHTML = `
+          <p><strong>Data:</strong> ${transacao.data}</p>
+          <p><strong>Tipo:</strong> ${transacao.tipo.charAt(0).toUpperCase() + transacao.tipo.slice(1)}</p>
+          <p><strong>Valor:</strong> AOA ${transacao.valor}</p>
+        `;
+        historicoLista.appendChild(div);
+      });
+    }
+
+    // Chama a função para renderizar o histórico completo inicialmente
+    renderizarHistorico();
+
+    // Evento para filtrar transações conforme a seleção
+    filtroTipo.addEventListener('change', (e) => {
+      renderizarHistorico(e.target.value);
+    });
+  </script>
+</body>
+</html>
