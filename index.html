@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaS Multifuncional para Alunos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+
+    .task-list li, .flashcards li {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    .quiz-option {
+      display: flex;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>SaaS Multifuncional para Alunos</h1>
+
+  <!-- Agenda de Estudo -->
+  <div class="container section" id="agenda">
+    <h2>Agenda de Estudo</h2>
+    <input type="text" id="task" placeholder="Digite sua tarefa">
+    <button id="add-task">Adicionar Tarefa</button>
+    <ul id="task-list"></ul>
+  </div>
+
+  <!-- Conversor de Unidades -->
+  <div class="container section" id="conversor">
+    <h2>Conversor de Unidades</h2>
+    <input type="number" id="value-to-convert" placeholder="Valor">
+    <select id="unit-type">
+      <option value="km-to-m">Quilômetro para Metro</option>
+      <option value="kg-to-g">Quilograma para Grama</option>
+    </select>
+    <button id="convert">Converter</button>
+    <p id="conversion-result"></p>
+  </div>
+
+  <!-- Flashcards -->
+  <div class="container section" id="flashcards">
+    <h2>Flashcards</h2>
+    <input type="text" id="flashcard-question" placeholder="Pergunta">
+    <input type="text" id="flashcard-answer" placeholder="Resposta">
+    <button id="add-flashcard">Adicionar Flashcard</button>
+    <ul id="flashcards-list"></ul>
+  </div>
+
+  <!-- Calculadora de Notas -->
+  <div class="container section" id="notas">
+    <h2>Calculadora de Notas</h2>
+    <input type="number" id="nota1" placeholder="Nota 1">
+    <input type="number" id="nota2" placeholder="Nota 2">
+    <input type="number" id="nota3" placeholder="Nota 3">
+    <button id="calculate-average">Calcular Média</button>
+    <p id="average-result"></p>
+  </div>
+
+  <!-- Conversor de Texto em Áudio -->
+  <div class="container section" id="text-to-speech">
+    <h2>Conversor de Texto em Áudio</h2>
+    <textarea id="text-to-convert" placeholder="Digite o texto para ouvir"></textarea>
+    <button id="speak-text">Ouvir Texto</button>
+  </div>
+
+  <!-- Gerador de Citações e Referências -->
+  <div class="container section" id="citation-generator">
+    <h2>Gerador de Citações</h2>
+    <input type="text" id="author" placeholder="Autor">
+    <input type="text" id="title" placeholder="Título">
+    <input type="number" id="year" placeholder="Ano">
+    <button id="generate-citation">Gerar Citação</button>
+    <p id="citation-result"></p>
+  </div>
+
+  <!-- Quiz de Conhecimentos -->
+  <div class="container section" id="quiz">
+    <h2>Quiz de Conhecimentos</h2>
+    <div class="quiz-option">
+      <input type="radio" id="quiz-option1" name="quiz" value="A">
+      <label for="quiz-option1">Opção A</label>
+    </div>
+    <div class="quiz-option">
+      <input type="radio" id="quiz-option2" name="quiz" value="B">
+      <label for="quiz-option2">Opção B</label>
+    </div>
+    <button id="submit-quiz">Submeter Resposta</button>
+    <p id="quiz-result"></p>
+  </div>
+
+  <!-- Editor de Notas -->
+  <div class="container section" id="editor">
+    <h2>Editor de Notas</h2>
+    <textarea id="editor-notes" placeholder="Escreva suas notas"></textarea>
+    <button id="save-notes">Salvar Notas</button>
+  </div>
+
+  <!-- Calculadora de Tempo de Estudo -->
+  <div class="container section" id="time-calculator">
+    <h2>Calculadora de Tempo de Estudo</h2>
+    <input type="number" id="study-hours" placeholder="Horas por tarefa">
+    <input type="number" id="tasks-count" placeholder="Número de tarefas">
+    <button id="calculate-time">Calcular Tempo</button>
+    <p id="time-result"></p>
+  </div>
+
+  <!-- Gerenciador de Senhas -->
+  <div class="container section" id="password-manager">
+    <h2>Gerenciador de Senhas</h2>
+    <input type="text" id="password-name" placeholder="Nome da conta">
+    <input type="password" id="password-value" placeholder="Senha">
+    <button id="save-password">Salvar Senha</button>
+    <ul id="password-list"></ul>
+  </div>
+
+  <script>
+    // Funcionalidades
+
+    // 1. Agenda de Estudo
+    const taskInput = document.getElementById('task');
+    const addTaskButton = document.getElementById('add-task');
+    const taskList = document.getElementById('task-list');
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    addTaskButton.addEventListener('click', () => {
+      const task = taskInput.value.trim();
+      if (task) {
+        tasks.push(task);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        renderTasks();
+        taskInput.value = '';
+      }
+    });
+
+    function renderTasks() {
+      taskList.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.textContent = task;
+        taskList.appendChild(li);
+      });
+    }
+
+    renderTasks();
+
+    // 2. Conversor de Unidades
+    document.getElementById('convert').addEventListener('click', () => {
+      const value = parseFloat(document.getElementById('value-to-convert').value);
+      const unitType = document.getElementById('unit-type').value;
+      let result = 0;
+
+      if (unitType === 'km-to-m') {
+        result = value * 1000;
+      } else if (unitType === 'kg-to-g') {
+        result = value * 1000;
+      }
+
+      document.getElementById('conversion-result').textContent = `Resultado: ${result}`;
+    });
+
+    // 3. Flashcards
+    const flashcardQuestionInput = document.getElementById('flashcard-question');
+    const flashcardAnswerInput = document.getElementById('flashcard-answer');
+    const addFlashcardButton = document.getElementById('add-flashcard');
+    const flashcardsList = document.getElementById('flashcards-list');
+    const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+
+    addFlashcardButton.addEventListener('click', () => {
+      const question = flashcardQuestionInput.value.trim();
+      const answer = flashcardAnswerInput.value.trim();
+      if (question && answer) {
+        flashcards.push({ question, answer });
+        localStorage.setItem('flashcards', JSON.stringify(flashcards));
+        renderFlashcards();
+        flashcardQuestionInput.value = '';
+        flashcardAnswerInput.value = '';
+      }
+    });
+
+    function renderFlashcards() {
+      flashcardsList.innerHTML = '';
+      flashcards.forEach(flashcard => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>Pergunta:</strong> ${flashcard.question}<br><strong>Resposta:</strong> ${flashcard.answer}`;
+        flashcardsList.appendChild(li);
+      });
+    }
+
+    renderFlashcards();
+
+    // 4. Calculadora de Notas
+    document.getElementById('calculate-average').addEventListener('click', () => {
+      const nota1 = parseFloat(document.getElementById('nota1').value);
+      const nota2 = parseFloat(document.getElementById('nota2').value);
+      const nota3 = parseFloat(document.getElementById('nota3').value);
+
+      const average = (nota1 + nota2 + nota3) / 3;
+      document.getElementById('average-result').textContent = `Média: ${average}`;
+    });
+
+    // 5. Conversor de Texto em Áudio
+    document.getElementById('speak-text').addEventListener('click', () => {
+      const text = document.getElementById('text-to-convert').value;
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    });
+
+    // 6. Gerador de Citações
+    document.getElementById('generate-citation').addEventListener('click', () => {
+      const author = document.getElementById('author').value;
+      const title = document.getElementById('title').value;
+      const year = document.getElementById('year').value;
+
+      const citation = `${author}. ${title}. ${year}.`;
+      document.getElementById('citation-result').textContent = `Citação gerada: ${citation}`;
+    });
+
+    // 7. Quiz de Conhecimentos
+    document.getElementById('submit-quiz').addEventListener('click', () => {
+      const answer = document.querySelector('input[name="quiz"]:checked');
+      const resultText = answer ? `Você escolheu: ${answer.value}` : 'Nenhuma resposta selecionada';
+      document.getElementById('quiz-result').textContent = resultText;
+    });
+
+    // 8. Editor de Notas
+    document.getElementById('save-notes').addEventListener('click', () => {
+      const notes = document.getElementById('editor-notes').value;
+      localStorage.setItem('notes', notes);
+      alert('Notas salvas com sucesso!');
+    });
+
+    // 9. Calculadora de Tempo de Estudo
+    document.getElementById('calculate-time').addEventListener('click', () => {
+      const hoursPerTask = parseFloat(document.getElementById('study-hours').value);
+      const taskCount = parseInt(document.getElementById('tasks-count').value);
+      const totalTime = hoursPerTask * taskCount;
+
+      document.getElementById('time-result').textContent = `Tempo total: ${totalTime} horas`;
+    });
+
+    // 10. Gerenciador de Senhas
+    const passwordList = document.getElementById('password-list');
+    const passwords = JSON.parse(localStorage.getItem('passwords')) || [];
+
+    document.getElementById('save-password').addEventListener('click', () => {
+      const passwordName = document.getElementById('password-name').value;
+      const passwordValue = document.getElementById('password-value').value;
+
+      passwords.push({ passwordName, passwordValue });
+      localStorage.setItem('passwords', JSON.stringify(passwords));
+      renderPasswords();
+      document.getElementById('password-name').value = '';
+      document.getElementById('password-value').value = '';
+    });
+
+    function renderPasswords() {
+      passwordList.innerHTML = '';
+      passwords.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = `${p.passwordName}: ${p.passwordValue}`;
+        passwordList.appendChild(li);
+      });
+    }
+
+    renderPasswords();
+  </script>
+</body>
+</html>
