@@ -4,50 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StudyHub - Plataforma de Estudo Inteligente</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     body {
       font-family: 'Arial', sans-serif;
       background-color: #f4f7fc;
     }
 
-    .navbar {
-      background-color: #4c6ef5;
-    }
-
-    .navbar a {
-      color: white !important;
-    }
-
     .card {
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .container {
-      margin-top: 50px;
-    }
-
-    .section-header {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
-      font-weight: bold;
+    .flashcard:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .input-box, .output-box {
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 15px;
       margin: 10px 0;
       background-color: white;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-custom {
-      background-color: #4c6ef5;
-      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .flashcard-container {
@@ -59,119 +44,89 @@
 
     .flashcard {
       background-color: #fff;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 20px;
       width: 200px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       text-align: center;
-    }
-
-    .flashcard h4 {
-      margin-bottom: 15px;
-    }
-
-    .flashcard p {
-      font-size: 16px;
-      color: #555;
+      transform: scale(1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-100">
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container">
-      <a class="navbar-brand" href="#">StudyHub</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Assistente IA</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Flashcards</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Resumo de Texto</a>
-          </li>
-        </ul>
-      </div>
+  <nav class="bg-blue-600 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#" class="text-white text-xl font-bold">StudyHub</a>
+      <ul class="flex space-x-6">
+        <li><a href="#" class="text-white">Assistente IA</a></li>
+        <li><a href="#" class="text-white">Flashcards</a></li>
+        <li><a href="#" class="text-white">Resumo de Texto</a></li>
+      </ul>
     </div>
   </nav>
 
   <!-- Main Content -->
-  <div class="container">
-    <div class="row">
+  <div class="container mx-auto py-16 px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
 
       <!-- IA Assistente -->
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="section-header">Assistente de Estudo</h5>
-            <textarea id="user-query" class="input-box" rows="4" placeholder="Digite sua dúvida aqui..."></textarea>
-            <button id="ask-question" class="btn btn-custom">Perguntar</button>
-            <div id="ai-answer" class="output-box"></div>
-          </div>
-        </div>
+      <div class="card bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out">
+        <h5 class="text-xl font-semibold mb-4 text-center">Assistente de Estudo</h5>
+        <textarea id="user-query" class="input-box w-full" rows="4" placeholder="Digite sua dúvida aqui..."></textarea>
+        <button id="ask-question" class="mt-4 w-full bg-blue-600 text-white p-2 rounded-lg">Perguntar</button>
+        <div id="ai-answer" class="output-box mt-4"></div>
       </div>
 
       <!-- Flashcards -->
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="section-header">Flashcards Inteligentes</h5>
-            <button id="generate-flashcards" class="btn btn-custom">Gerar Flashcards</button>
-            <div id="flashcards-output" class="flashcard-container"></div>
-          </div>
-        </div>
+      <div class="card bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out">
+        <h5 class="text-xl font-semibold mb-4 text-center">Flashcards Inteligentes</h5>
+        <button id="generate-flashcards" class="w-full bg-blue-600 text-white p-2 rounded-lg">Gerar Flashcards</button>
+        <div id="flashcards-output" class="flashcard-container mt-4"></div>
       </div>
 
       <!-- Resumo de Texto -->
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="section-header">Resumo Automático</h5>
-            <textarea id="input-text" class="input-box" rows="4" placeholder="Cole seu texto aqui..."></textarea>
-            <button id="summarize-text" class="btn btn-custom">Gerar Resumo</button>
-            <div id="text-summary" class="output-box"></div>
-          </div>
-        </div>
+      <div class="card bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out">
+        <h5 class="text-xl font-semibold mb-4 text-center">Resumo Automático</h5>
+        <textarea id="input-text" class="input-box w-full" rows="4" placeholder="Cole seu texto aqui..."></textarea>
+        <button id="summarize-text" class="mt-4 w-full bg-blue-600 text-white p-2 rounded-lg">Gerar Resumo</button>
+        <div id="text-summary" class="output-box mt-4"></div>
       </div>
 
     </div>
   </div>
 
+  <!-- Script -->
   <script>
-    // 1. Assistente de Estudo IA (GPT ou outra API)
+    // Função para perguntar ao assistente IA utilizando DeepAI API
     document.getElementById("ask-question").addEventListener("click", async function() {
       const userQuery = document.getElementById("user-query").value;
-      
       if (userQuery.trim() === "") return alert("Por favor, insira uma dúvida.");
 
-      // Exemplo de uso de uma API, como OpenAI GPT (ou qualquer outra API)
-      const apiUrl = "https://api.openai.com/v1/completions";
-      const apiKey = "SUA_API_KEY";
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'text-davinci-003',
-          prompt: userQuery,
-          max_tokens: 150
-        })
-      });
+      const apiUrl = "https://api.deepai.org/api/text-generator";
+      const apiKey = "SUA_DEEPAI_API_KEY";  // Substitua pela sua chave de API da DeepAI
 
-      const data = await response.json();
-      document.getElementById("ai-answer").innerHTML = `<p><strong>Resposta:</strong> ${data.choices[0].text}</p>`;
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Api-Key': apiKey
+          },
+          body: new URLSearchParams({
+            text: userQuery
+          })
+        });
+        const data = await response.json();
+        document.getElementById("ai-answer").innerHTML = `<p><strong>Resposta:</strong> ${data.output}</p>`;
+      } catch (error) {
+        console.error('Erro:', error);
+        alert("Ocorreu um erro. Tente novamente.");
+      }
     });
 
-    // 2. Gerar Flashcards Inteligentes
+    // Gerar Flashcards Inteligentes
     document.getElementById("generate-flashcards").addEventListener("click", function() {
       const flashcards = [
         { question: "O que é a fotossíntese?", answer: "É o processo pelo qual as plantas convertem luz solar em energia." },
@@ -180,39 +135,42 @@
 
       const flashcardsContainer = document.getElementById("flashcards-output");
       flashcardsContainer.innerHTML = "";
-      
+
       flashcards.forEach(fc => {
         const flashcard = document.createElement("div");
-        flashcard.classList.add("flashcard");
-        flashcard.innerHTML = `<h4>${fc.question}</h4><p>${fc.answer}</p>`;
+        flashcard.classList.add("flashcard", "p-4", "bg-white", "rounded-lg", "shadow-md");
+        flashcard.innerHTML = `<h4 class="font-semibold">${fc.question}</h4><p class="text-gray-600">${fc.answer}</p>`;
         flashcardsContainer.appendChild(flashcard);
       });
     });
 
-    // 3. Resumo de Texto
+    // Resumo de Texto com DeepAI API
     document.getElementById("summarize-text").addEventListener("click", async function() {
       const inputText = document.getElementById("input-text").value;
-      
       if (inputText.trim() === "") return alert("Por favor, cole um texto.");
-      
-      // Resumo utilizando API GPT ou outras APIs
-      const response = await fetch("https://api.openai.com/v1/completions", {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer SUA_API_KEY`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'text-davinci-003',
-          prompt: `Resuma o seguinte texto: ${inputText}`,
-          max_tokens: 100
-        })
-      });
 
-      const data = await response.json();
-      document.getElementById("text-summary").innerHTML = `<p><strong>Resumo:</strong> ${data.choices[0].text}</p>`;
+      const apiUrl = "https://api.deepai.org/api/summarization";
+      const apiKey = "SUA_DEEPAI_API_KEY";  // Substitua pela sua chave de API da DeepAI
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Api-Key': apiKey
+          },
+          body: new URLSearchParams({
+            text: inputText
+          })
+        });
+        const data = await response.json();
+        document.getElementById("text-summary").innerHTML = `<p><strong>Resumo:</strong> ${data.output}</p>`;
+      } catch (error) {
+        console.error('Erro:', error);
+        alert("Ocorreu um erro. Tente novamente.");
+      }
     });
   </script>
 
 </body>
 </html>
+
