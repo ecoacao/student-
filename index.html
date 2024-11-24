@@ -81,12 +81,13 @@
       const searchTerm = document.getElementById('searchInput').value;
 
       if (!searchTerm) return;
-
-      axios.get(`https://api.jamendo.com/v3.0/tracks/?client_id=YOUR_API_KEY&limit=5&namesearch=${searchTerm}`)
+ function searchMusic() {
+      const searchTerm = document.getElementById('searchInput').value;
+      axios.get(`https://api.vagalume.com.br/search.php?apikey=5f06b583872ce8d0689cfac51ca703e9=${searchTerm}`)
         .then(response => {
-          const results = response.data.results;
+          const results = response.data.response.docs;
           const musicResultsDiv = document.getElementById('musicResults');
-          musicResultsDiv.innerHTML = ''; // Clear previous results
+          musicResultsDiv.innerHTML = ''; // Limpar os resultados anteriores
 
           results.forEach((track) => {
             const musicCard = document.createElement('div');
