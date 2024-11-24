@@ -15,24 +15,23 @@
 
   <!-- CSS embutido -->
   <style>
+    /* Estilos gerais */
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
       background: linear-gradient(135deg, #ff7b34, #f66f3c); /* Degradê vibrante */
       color: white;
-      height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      min-height: 100vh; /* Garantir que o corpo ocupe toda a altura da tela */
     }
 
     .container {
+      flex: 1; /* Para garantir que o conteúdo ocupe o máximo de espaço possível */
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100%;
-      max-width: 100%;
     }
 
     .login-container, .signup-container {
@@ -71,18 +70,13 @@
     }
 
     .footer {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
       background-color: rgba(0, 0, 0, 0.7);
       padding: 15px;
       color: white;
       text-align: center;
-    }
-
-    .footer p {
-      margin: 0;
       font-size: 14px;
+      width: 100%;
+      margin-top: auto; /* Empurra o footer para baixo */
     }
 
     .highlight {
@@ -230,6 +224,7 @@
   </div>
 </body>
 </html>
+
 
 
 
