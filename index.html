@@ -1,54 +1,74 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Busca de Músicas</title>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia Angola - Empoderamento Jovem</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f7fafc;
+            font-family: 'Arial', sans-serif;
+        }
+        .hero {
+            background: linear-gradient(145deg, #ff5c8f, #ff9300);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: 20px;
+        }
+        .section-title {
+            font-size: 2rem;
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
 </head>
 <body>
-  <input type="text" id="searchInput" placeholder="Pesquisar por música">
-  <button onclick="searchMusic()">Buscar</button>
-  
-  <div id="musicResults"></div>
+    <header class="hero">
+        <h1 class="text-4xl font-bold">Academia Angola</h1>
+        <p class="mt-4 text-lg">Empoderando Jovens Angolanos para o Futuro!</p>
+        <a href="#cursos" class="mt-8 px-6 py-2 bg-yellow-500 text-white rounded-full">Comece Agora</a>
+    </header>
 
-  <script>
-    // Função para fazer a busca
-    function searchMusic() {
-      const searchTerm = document.getElementById('searchInput').value;
-      axios.get(`https://api.vagalume.com.br/search.php?apikey=5f06b583872ce8d0689cfac51ca703e9=${searchTerm}`)
-        .then(response => {
-          const results = response.data.response.docs;
-          const musicResultsDiv = document.getElementById('musicResults');
-          musicResultsDiv.innerHTML = ''; // Limpar os resultados anteriores
+    <section id="cursos" class="my-16">
+        <h2 class="section-title">Cursos Populares</h2>
+        <div class="flex justify-center mt-8">
+            <div class="card max-w-sm">
+                <h3 class="text-xl font-bold">Desenvolvimento Web</h3>
+                <p>Aprenda a construir websites e aplicações modernas com HTML, CSS, JavaScript e mais!</p>
+                <a href="#" class="mt-4 text-yellow-500">Inscreva-se agora</a>
+            </div>
+            <div class="card max-w-sm mx-8">
+                <h3 class="text-xl font-bold">Empreendedorismo Digital</h3>
+                <p>Transforme sua ideia em um negócio de sucesso! Curso completo sobre como iniciar no digital.</p>
+                <a href="#" class="mt-4 text-yellow-500">Inscreva-se agora</a>
+            </div>
+            <div class="card max-w-sm">
+                <h3 class="text-xl font-bold">Gestão de Finanças Pessoais</h3>
+                <p>Aprenda a controlar seu dinheiro e alcançar seus objetivos financeiros com inteligência!</p>
+                <a href="#" class="mt-4 text-yellow-500">Inscreva-se agora</a>
+            </div>
+        </div>
+    </section>
 
-          // Exibir os resultados
-          results.forEach(track => {
-            const trackDiv = document.createElement('div');
-            trackDiv.classList.add('track');
-            
-            const trackName = document.createElement('h3');
-            trackName.textContent = track.title;
-            
-            const artistName = document.createElement('p');
-            artistName.textContent = `Por: ${track.artist}`;
-            
-            const audioPlayer = document.createElement('audio');
-            audioPlayer.controls = true;
-            audioPlayer.src = `https://api.vagalume.com.br/v1/playlist/${track.artist}/${track.title}/audio/`; // Link de áudio da Vagalume
-            
-            trackDiv.appendChild(trackName);
-            trackDiv.appendChild(artistName);
-            trackDiv.appendChild(audioPlayer);
-            
-            musicResultsDiv.appendChild(trackDiv);
-          });
-        })
-        .catch(error => {
-          console.error('Erro ao buscar músicas:', error);
-        });
-    }
-  </script>
+    <footer class="text-center py-6">
+        <p>© 2024 Academia Angola. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // JS para funcionalidades, por exemplo, exibição de mais cursos ou integração com pagamento, etc.
+    </script>
 </body>
 </html>
-
