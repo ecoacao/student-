@@ -25,7 +25,7 @@
     }
 
     .container {
-      margin-top: 80px;
+      margin-top: 50px;
     }
 
     .login-container, .signup-container, .dashboard-container {
@@ -84,6 +84,29 @@
     .dashboard-container .list-group-item:hover {
       background-color: #f66f3c;
     }
+
+    .form-control {
+      font-size: 16px; /* Melhor para usabilidade em dispositivos móveis */
+    }
+
+    /* Melhorias de responsividade */
+    @media (max-width: 576px) {
+      .login-container, .signup-container, .dashboard-container {
+        padding: 20px;
+      }
+
+      .btn-custom {
+        font-size: 16px;
+      }
+    }
+
+    /* Footer adjustments */
+    @media (max-width: 576px) {
+      .footer {
+        font-size: 12px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -96,7 +119,7 @@
     const { useState } = React;
 
     // Componente de Login
-    const Login = ({ onLogin }) => {
+    const Login = ({ onLogin, onSwitchToSignup }) => {
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
 
@@ -119,7 +142,45 @@
             </div>
             <button type="submit" className="btn btn-custom w-100">Entrar</button>
           </form>
-          <p className="mt-3 text-center">Ainda não tem conta? <a href="#" onClick={onLogin}>Crie uma aqui!</a></p>
+          <p className="mt-3 text-center">Ainda não tem conta? <a href="#" onClick={onSwitchToSignup}>Crie uma aqui!</a></p>
+        </div>
+      );
+    };
+
+    // Componente de Cadastro
+    const Signup = ({ onSignup, onSwitchToLogin }) => {
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      const [confirmPassword, setConfirmPassword] = useState('');
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (password === confirmPassword) {
+          onSignup({ email, password });
+        } else {
+          alert("As senhas não coincidem");
+        }
+      };
+
+      return (
+        <div className="signup-container">
+          <h2 className="text-center">Crie sua Conta <span className="highlight">Bantux</span></h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">E-mail</label>
+              <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Senha</label>
+              <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Confirmar Senha</label>
+              <input type="password" className="form-control" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            </div>
+            <button type="submit" className="btn btn-custom w-100">Cadastrar</button>
+          </form>
+          <p className="mt-3 text-center">Já tem conta? <a href="#" onClick={onSwitchToLogin}>Faça login aqui!</a></p>
         </div>
       );
     };
@@ -147,19 +208,33 @@
     // Componente Principal (App)
     const App = () => {
       const [user, setUser] = useState(null);
+      const [isLogin, setIsLogin] = useState(true); // Controla se está na tela de login ou cadastro
 
       const handleLogin = (userData) => {
         const { email, password } = userData;
-        if (email === 'user@example.com' && password === '123456') {
+        if (email === 'user@gmail.com' && password === '123') {
           setUser({ nome: 'João Silva', email });
         } else {
           alert('Credenciais inválidas');
         }
       };
 
+      const handleSignup = (userData) => {
+        // Aqui poderia haver validação de dados reais para o cadastro.
+        setUser({ nome: userData.email.split('@')[0], email: userData.email });
+      };
+
       return (
         <div className="container">
-          {user ? <Dashboard user={user} /> : <Login onLogin={handleLogin} />}
+          {user ? (
+            <Dashboard user={user} />
+          ) : (
+            isLogin ? (
+              <Login onLogin={handleLogin} onSwitchToSignup={() => setIsLogin(false)} />
+            ) : (
+              <Signup onSignup={handleSignup} onSwitchToLogin={() => setIsLogin(true)} />
+            )
+          )}
         </div>
       );
     };
@@ -177,4 +252,5 @@
   </div>
 </body>
 </html>
+
 
