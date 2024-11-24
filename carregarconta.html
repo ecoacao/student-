@@ -35,7 +35,7 @@
     }
 
     .container {
-      margin-top: 80px;
+      margin-top: 120px; /* Espaçamento ajustado para não sobrepor a navbar */
       max-width: 900px;
     }
 
@@ -145,9 +145,8 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Sair</a>
-          </li>
-        </ul>
-      </div>
+          </ul>
+        </div>
     </div>
   </nav>
 
@@ -161,7 +160,7 @@
         <!-- Resumo de Saldo -->
         <div class="balance-summary">
           <h4>Saldo Atual</h4>
-          <p>AOA 5,000.00</p>
+          <p id="saldo">AOA 5,000.00</p>
         </div>
 
         <!-- Formulário de Carregamento -->
@@ -193,16 +192,48 @@
 
         <!-- Histórico de Transações -->
         <h3 class="mt-4">Histórico de Transações</h3>
-        <div class="history-item">
-          <p>24/11/2024 - Carregamento via Cartão - AOA 1000.00</p>
+        <div id="historico">
+          <!-- Histórico será gerado dinamicamente aqui -->
         </div>
-        <div class="history-item">
-          <p>20/11/2024 - Carregamento via Transferência - AOA 500.00</p>
-        </div>
-
       </div>
     </div>
 
+  </div>
+
+  <!-- Modal para Adicionar Cartão -->
+  <div class="modal fade" id="modal-cartao" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Adicionar Cartão</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-cartao">
+            <div class="mb-3">
+              <label for="nome-cartao" class="form-label">Nome Completo</label>
+              <input type="text" class="form-control" id="nome-cartao" required />
+            </div>
+            <div class="mb-3">
+              <label for="numero-cartao" class="form-label">Número do Cartão</label>
+              <input type="text" class="form-control" id="numero-cartao" required />
+            </div>
+            <div class="mb-3">
+              <label for="validade-cartao" class="form-label">Data de Validade</label>
+              <input type="month" class="form-control" id="validade-cartao" required />
+            </div>
+            <div class="mb-3">
+              <label for="cvv-cartao" class="form-label">CVV</label>
+              <input type="text" class="form-control" id="cvv-cartao" required />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="adicionar-cartao">Adicionar Cartão</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Scripts -->
@@ -212,19 +243,56 @@
   <script>
     const carregarForm = document.getElementById('carregar-form');
     const loadingIndicator = document.getElementById('loading-indicator');
+    const saldo = document.getElementById('saldo');
+    const historicoDiv = document.getElementById('historico');
+    const modalCartao = new bootstrap.Modal(document.getElementById('modal-cartao'));
 
+    // Função para simular o processamento de um pagamento
     carregarForm.addEventListener('submit', function(event) {
       event.preventDefault();
       loadingIndicator.style.display = 'block'; // Exibe o indicador de carregamento
 
-      // Simula uma chamada de API ou pagamento
+      const valor = document.getElementById('valor').value;
+      const metodo = document.getElementById('metodo').value;
+
+      // Atualiza o histórico e saldo dinamicamente
       setTimeout(() => {
-        alert('Pagamento realizado com sucesso!');
+        saldo.innerText = `AOA ${parseFloat(saldo.innerText.replace("AOA", "").trim()) + parseFloat(valor)}.00`;
+        
+        const novoHistorico = document.createElement('div');
+        novoHistorico.classList.add('history-item');
+        novoHistorico.innerHTML = `${new Date().toLocaleDateString()} - Carregamento via ${metodo.charAt(0).toUpperCase() + metodo.slice(1)} - AOA ${valor}`;
+        historicoDiv.prepend(novoHistorico);
+
         loadingIndicator.style.display = 'none'; // Oculta o indicador de carregamento
+        alert('Pagamento realizado com sucesso!');
       }, 3000); // Simula o tempo de processamento (3 segundos)
+    });
+
+    // Abrir o modal de adicionar cartão
+    document.getElementById('metodo').addEventListener('change', function() {
+      if (this.value === 'cartao') {
+        modalCartao.show();
+      }
+    });
+
+    // Adicionar cartão
+    document.getElementById('adicionar-cartao').addEventListener('click', function() {
+      const nome = document.getElementById('nome-cartao').value;
+      const numero = document.getElementById('numero-cartao').value;
+      const validade = document.getElementById('validade-cartao').value;
+      const cvv = document.getElementById('cvv-cartao').value;
+
+      if (nome && numero && validade && cvv) {
+        alert('Cartão adicionado com sucesso!');
+        modalCartao.hide();
+      } else {
+        alert('Preencha todos os campos');
+      }
     });
   </script>
 </body>
 </html>
+
 
 
