@@ -3,85 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music Stream & Download</title>
+  <title>Busca de Músicas</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #282828;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-
-    .card {
-      background-color: #333;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .music-img {
-      border-radius: 8px;
-      width: 200px;
-      height: 200px;
-    }
-
-    .music-title {
-      font-size: 18px;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    .btn {
-      background-color: #ff66b2;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .btn:hover {
-      background-color: #ff4c99;
-    }
-
-    #player {
-      width: 100%;
-      max-width: 600px;
-      margin-top: 20px;
-      border-radius: 8px;
-    }
-  </style>
 </head>
 <body>
-
-  <div class="container mx-auto p-4">
-    <h1 class="text-3xl text-center mb-4">Music Stream & Download</h1>
-    <div class="flex justify-center mb-6">
-      <input id="searchInput" type="text" class="p-2 w-1/3 rounded" placeholder="Search for music...">
-      <button class="btn ml-2" onclick="searchMusic()">Search</button>
-    </div>
-
-    <div id="musicResults"></div>
-
-    <div id="playerContainer" class="text-center">
-      <audio id="player" controls>
-        <source id="audioSource" src="" type="audio/mp3">
-        Your browser does not support the audio tag.
-      </audio>
-    </div>
-  </div>
+  <input type="text" id="searchInput" placeholder="Pesquisar por música">
+  <button onclick="searchMusic()">Buscar</button>
+  
+  <div id="musicResults"></div>
 
   <script>
+    // Função para fazer a busca
     function searchMusic() {
-      const searchTerm = document.getElementById('searchInput').value;
-
-      if (!searchTerm) return;
- function searchMusic() {
       const searchTerm = document.getElementById('searchInput').value;
       axios.get(`https://api.vagalume.com.br/search.php?apikey=5f06b583872ce8d0689cfac51ca703e9=${searchTerm}`)
         .then(response => {
@@ -89,32 +22,33 @@
           const musicResultsDiv = document.getElementById('musicResults');
           musicResultsDiv.innerHTML = ''; // Limpar os resultados anteriores
 
-          results.forEach((track) => {
-            const musicCard = document.createElement('div');
-            musicCard.classList.add('card');
-            musicCard.innerHTML = `
-              <img src="${track.cover_small}" class="music-img" alt="${track.name}">
-              <p class="music-title">${track.name} - ${track.artist_name}</p>
-              <button class="btn" onclick="playMusic('${track.audio_file}')">Play</button>
-              <a href="${track.audio_file}" class="btn" download>Download</a>
-            `;
-            musicResultsDiv.appendChild(musicCard);
+          // Exibir os resultados
+          results.forEach(track => {
+            const trackDiv = document.createElement('div');
+            trackDiv.classList.add('track');
+            
+            const trackName = document.createElement('h3');
+            trackName.textContent = track.title;
+            
+            const artistName = document.createElement('p');
+            artistName.textContent = `Por: ${track.artist}`;
+            
+            const audioPlayer = document.createElement('audio');
+            audioPlayer.controls = true;
+            audioPlayer.src = `https://api.vagalume.com.br/v1/playlist/${track.artist}/${track.title}/audio/`; // Link de áudio da Vagalume
+            
+            trackDiv.appendChild(trackName);
+            trackDiv.appendChild(artistName);
+            trackDiv.appendChild(audioPlayer);
+            
+            musicResultsDiv.appendChild(trackDiv);
           });
         })
-        .catch(err => {
-          console.error(err);
+        .catch(error => {
+          console.error('Erro ao buscar músicas:', error);
         });
     }
-
-    function playMusic(audioUrl) {
-      const player = document.getElementById('player');
-      const audioSource = document.getElementById('audioSource');
-      audioSource.src = audioUrl;
-      player.load();
-      player.play();
-    }
   </script>
-
 </body>
 </html>
 
